@@ -10,22 +10,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  DEFAULT_SEARCH_RADIUS_METERS,
-  getCoffeeShopsNearPoint,
+  getCoffeeShops,
+  getSearchRadius,
+  SEARCH_RADIUS_OPTIONS,
 } from "@/features/cafes/get-coffee-shops";
 import { getNeighborhood, neighborhoods } from "@/features/cafes/neighborhoods";
 
 export default async function Home({ searchParams }: PageProps<"/">) {
   await connection();
 
-  const { neighborhood } = await searchParams;
+  const { neighborhood, radius: radiusParam } = await searchParams;
   const selectedNeighborhood = getNeighborhood(neighborhood);
+  const selectedRadius = getSearchRadius(radiusParam);
 
   let shops;
   try {
-    shops = await getCoffeeShopsNearPoint(
-      selectedNeighborhood.longitude,
-      selectedNeighborhood.latitude,
+    shops = await getCoffeeShops(
+      selectedRadius.meters === null
+        ? { radiusMeters: null }
+        : {
+            longitude: selectedNeighborhood.longitude,
+            latitude: selectedNeighborhood.latitude,
+            radiusMeters: selectedRadius.meters,
+          },
     );
   } catch (error) {
     console.error("Failed to load coffee shops from the database.", error);
@@ -61,12 +68,30 @@ export default async function Home({ searchParams }: PageProps<"/">) {
             </SelectContent>
           </Select>
         </div>
-        <Button type="submit">Show nearby shops</Button>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="search-radius" className="text-sm font-medium">
+            Search radius
+          </label>
+          <Select name="radius" defaultValue={selectedRadius.value}>
+            <SelectTrigger id="search-radius">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SEARCH_RADIUS_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <Button type="submit">Show coffee shops</Button>
       </form>
 
       <h2 className="mt-8 text-xl font-semibold">
-        Coffee shops within {DEFAULT_SEARCH_RADIUS_METERS / 1000} km of{" "}
-        {selectedNeighborhood.name}
+        {selectedRadius.meters === null
+          ? "All listed specialty coffee shops in Barcelona"
+          : `Coffee shops within ${selectedRadius.label} of ${selectedNeighborhood.name}`}
       </h2>
 
       {shops === null ? (
@@ -79,11 +104,14 @@ export default async function Home({ searchParams }: PageProps<"/">) {
       ) : shops.length === 0 ? (
         <Alert role="status" className="mt-8">
           <AlertTitle>
-            No coffee shops within {DEFAULT_SEARCH_RADIUS_METERS / 1000} km of{" "}
-            {selectedNeighborhood.name}
+            {selectedRadius.meters === null
+              ? "No specialty coffee shops are listed in Barcelona yet"
+              : `No coffee shops within ${selectedRadius.label} of ${selectedNeighborhood.name}`}
           </AlertTitle>
           <AlertDescription>
-            Try another neighborhood to see nearby specialty coffee shops.
+            {selectedRadius.meters === null
+              ? "Try again in a little while."
+              : "Try another neighborhood or a wider search radius to see nearby specialty coffee shops."}
           </AlertDescription>
         </Alert>
       ) : (

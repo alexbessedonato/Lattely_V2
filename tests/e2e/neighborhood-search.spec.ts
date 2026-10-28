@@ -10,7 +10,7 @@ test("changing neighborhoods refreshes the nearby coffee shops", async ({
 
   await page.getByRole("combobox", { name: "Barcelona neighborhood" }).click();
   await page.getByRole("option", { name: "Dreta de l’Eixample" }).click();
-  await page.getByRole("button", { name: "Show nearby shops" }).click();
+  await page.getByRole("button", { name: "Show coffee shops" }).click();
 
   await expect(page).toHaveURL(/neighborhood=dreta-de-leixample/);
   await expect(
