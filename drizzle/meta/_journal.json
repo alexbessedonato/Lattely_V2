@@ -8,6 +8,13 @@
       "when": 1793194668253,
       "tag": "0000_coffee-shops",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793206398381,
+      "tag": "0001_coffee-shop-locations",
+      "breakpoints": true
     }
   ]
 }
