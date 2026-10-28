@@ -36,6 +36,7 @@ The application and configuration files were written directly using the standard
 ## Verify
 
 ```sh
+pnpm format:check
 pnpm typecheck
 pnpm build
 pnpm start
@@ -46,3 +47,7 @@ Stop `pnpm dev` before running the production server, since both default to port
 To see routing and Fast Refresh in development, run `pnpm dev`, edit the introduction in `src/app/page.tsx`, and save. The browser updates the content at `/`; revert the edit afterward.
 
 There is no automated test suite yet. This checkpoint adds a static page with no application logic; verification uses TypeScript, a production build, and a browser smoke check. Database access, authentication, search, and hosting are deferred.
+
+## Formatting
+
+Run `pnpm format` to format the repository with Prettier, or `pnpm format:check` to check without changing files. `.prettierrc` uses two-space indentation, double quotes, semicolons, and trailing commas. Generated files are excluded through `.prettierignore`.

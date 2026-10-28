@@ -5,7 +5,9 @@ export default function Home() {
       <p className="mt-4 text-lg text-stone-700">
         Discover specialty coffee shops in Barcelona.
       </p>
-      <p className="mt-6 text-sm text-stone-600">Private development version.</p>
+      <p className="mt-6 text-sm text-stone-600">
+        Private development version.
+      </p>
     </main>
   );
 }
