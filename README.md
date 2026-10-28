@@ -49,25 +49,22 @@ The layout uses Tailwind breakpoints for spacing and shadcn's semantic color tok
 
 Add standard components as features need them using `pnpm dlx shadcn@4.23.0 add <component>`, then review the generated files and dependencies and run the checks below. Keep feature-specific compositions in the feature folders described in `docs/agents/tech-stack.md`.
 
+## Checkpoint 3: database-backed coffee shop list
+
+The home page now reads shop IDs and names from the `coffee_shops` table with Drizzle on the server. It sorts by name, shows a useful empty state when the table has no rows, and gives a generic message if the query fails. `DATABASE_URL` stays server-side. The seed and browser-test commands explicitly use the Neon `development` branch; the production branch is not used.
+
 ## Verify
 
 ```sh
 pnpm format:check
 pnpm typecheck
 pnpm build
-pnpm start
+pnpm test:e2e
 ```
 
-Stop `pnpm dev` before running the production server, since both default to port 3000. Open <http://localhost:3000> without signing in and check:
+`pnpm test:e2e` seeds two deterministic rows in the development branch, then starts the built app and checks that both names are rendered from the database. To inspect the page manually, run `pnpm start` and open <http://localhost:3000>.
 
-- The Lattely heading, introduction, and “Private development · Sample data” notice appear.
-- Exactly one shop appears: “Sample Coffee”, labeled “Fictional sample shop”, with “Gràcia, Barcelona” and its description.
-- The development notice is exposed as a note, and the shop is a named article with a level-two heading in the browser's accessibility tree.
-- At narrow mobile widths (320 px and 375 px) and on desktop, all content remains readable without clipping or horizontal scrolling.
-
-To see routing and Fast Refresh in development, run `pnpm dev`, edit the introduction in `src/app/page.tsx`, and save. The browser updates the content at `/`; revert the edit afterward.
-
-There is no automated test suite yet. This page renders fixed sample data without interactive logic; verification uses TypeScript, a production build, and a browser smoke check. Database access, authentication, search, and hosting are deferred.
+Authentication, search, and hosting configuration are deferred.
 
 ## Formatting
 

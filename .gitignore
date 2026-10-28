@@ -1,5 +1,6 @@
 node_modules/
 .next/
+test-results/
 .pnpm-store/
 *.tsbuildinfo
 next-env.d.ts
