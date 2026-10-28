@@ -2,11 +2,7 @@ import { asc, sql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { coffeeShops } from "@/db/schema";
 
-const DEFAULT_SEARCH_RADIUS_METERS = 2_000;
-
-export async function getCoffeeShops() {
-  return getDb().select().from(coffeeShops).orderBy(asc(coffeeShops.name));
-}
+export const DEFAULT_SEARCH_RADIUS_METERS = 2_000;
 
 export async function getCoffeeShopsNearPoint(
   longitude: number,

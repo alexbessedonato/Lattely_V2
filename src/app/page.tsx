@@ -1,14 +1,24 @@
 import { connection } from "next/server";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCoffeeShops } from "@/features/cafes/get-coffee-shops";
+import {
+  DEFAULT_SEARCH_RADIUS_METERS,
+  getCoffeeShopsNearPoint,
+} from "@/features/cafes/get-coffee-shops";
+import { getNeighborhood, neighborhoods } from "@/features/cafes/neighborhoods";
 
-export default async function Home() {
+export default async function Home({ searchParams }: PageProps<"/">) {
   await connection();
+
+  const { neighborhood } = await searchParams;
+  const selectedNeighborhood = getNeighborhood(neighborhood);
 
   let shops;
   try {
-    shops = await getCoffeeShops();
+    shops = await getCoffeeShopsNearPoint(
+      selectedNeighborhood.longitude,
+      selectedNeighborhood.latitude,
+    );
   } catch (error) {
     console.error("Failed to load coffee shops from the database.", error);
     shops = null;
@@ -21,6 +31,41 @@ export default async function Home() {
         Discover specialty coffee shops in Barcelona.
       </p>
 
+      <form
+        action="/"
+        method="get"
+        className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-end"
+      >
+        <div className="flex flex-col gap-2">
+          <label htmlFor="neighborhood" className="text-sm font-medium">
+            Barcelona neighborhood
+          </label>
+          <select
+            id="neighborhood"
+            name="neighborhood"
+            defaultValue={selectedNeighborhood.id}
+            className="h-10 rounded-md border bg-background px-3 text-sm"
+          >
+            {neighborhoods.map((neighborhood) => (
+              <option key={neighborhood.id} value={neighborhood.id}>
+                {neighborhood.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button
+          type="submit"
+          className="h-10 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        >
+          Show nearby shops
+        </button>
+      </form>
+
+      <h2 className="mt-8 text-xl font-semibold">
+        Coffee shops within {DEFAULT_SEARCH_RADIUS_METERS / 1000} km of{" "}
+        {selectedNeighborhood.name}
+      </h2>
+
       {shops === null ? (
         <Alert variant="destructive" className="mt-8">
           <AlertTitle>Could not load coffee shops</AlertTitle>
@@ -30,9 +75,12 @@ export default async function Home() {
         </Alert>
       ) : shops.length === 0 ? (
         <Alert role="status" className="mt-8">
-          <AlertTitle>No coffee shops yet</AlertTitle>
+          <AlertTitle>
+            No coffee shops within {DEFAULT_SEARCH_RADIUS_METERS / 1000} km of{" "}
+            {selectedNeighborhood.name}
+          </AlertTitle>
           <AlertDescription>
-            Coffee shops will appear here when they are added.
+            Try another neighborhood to see nearby specialty coffee shops.
           </AlertDescription>
         </Alert>
       ) : (
