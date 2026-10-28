@@ -1,6 +1,14 @@
 import { connection } from "next/server";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   DEFAULT_SEARCH_RADIUS_METERS,
   getCoffeeShopsNearPoint,
@@ -40,25 +48,20 @@ export default async function Home({ searchParams }: PageProps<"/">) {
           <label htmlFor="neighborhood" className="text-sm font-medium">
             Barcelona neighborhood
           </label>
-          <select
-            id="neighborhood"
-            name="neighborhood"
-            defaultValue={selectedNeighborhood.id}
-            className="h-10 rounded-md border bg-background px-3 text-sm"
-          >
-            {neighborhoods.map((neighborhood) => (
-              <option key={neighborhood.id} value={neighborhood.id}>
-                {neighborhood.name}
-              </option>
-            ))}
-          </select>
+          <Select name="neighborhood" defaultValue={selectedNeighborhood.id}>
+            <SelectTrigger id="neighborhood">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {neighborhoods.map((neighborhood) => (
+                <SelectItem key={neighborhood.id} value={neighborhood.id}>
+                  {neighborhood.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <button
-          type="submit"
-          className="h-10 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-        >
-          Show nearby shops
-        </button>
+        <Button type="submit">Show nearby shops</Button>
       </form>
 
       <h2 className="mt-8 text-xl font-semibold">

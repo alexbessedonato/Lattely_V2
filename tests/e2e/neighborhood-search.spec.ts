@@ -8,9 +8,8 @@ test("changing neighborhoods refreshes the nearby coffee shops", async ({
     page.getByRole("heading", { level: 2, name: "Lattely Test Coffee" }),
   ).toBeVisible();
 
-  await page
-    .getByRole("combobox", { name: "Barcelona neighborhood" })
-    .selectOption("dreta-de-leixample");
+  await page.getByRole("combobox", { name: "Barcelona neighborhood" }).click();
+  await page.getByRole("option", { name: "Dreta de l’Eixample" }).click();
   await page.getByRole("button", { name: "Show nearby shops" }).click();
 
   await expect(page).toHaveURL(/neighborhood=dreta-de-leixample/);
@@ -55,7 +54,7 @@ test("falls back to a curated neighborhood for an unknown query value", async ({
 
   await expect(
     page.getByRole("combobox", { name: "Barcelona neighborhood" }),
-  ).toHaveValue("vila-de-gracia");
+  ).toContainText("Vila de Gràcia");
   await expect(
     page.getByRole("heading", { level: 2, name: "Lattely Test Coffee" }),
   ).toBeVisible();
