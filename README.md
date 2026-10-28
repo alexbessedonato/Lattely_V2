@@ -19,7 +19,7 @@ The application shell provides the Lattely heading, an introduction, and a priva
 
 When a browser requests `/`, Next.js uses `src/app/page.tsx` for the page content and wraps it in `src/app/layout.tsx`, which supplies the document's `<html>` and `<body>` elements and page metadata. Both are Server Components by default. This page has no client-side state or data requests; Next.js can render it to static HTML during the production build.
 
-`src/app/globals.css` imports Tailwind. The PostCSS configuration makes Tailwind turn the utility classes in the components into CSS.
+`src/app/globals.css` imports Tailwind and defines the shadcn Stone theme tokens. The PostCSS configuration makes Tailwind turn the utility classes in the components into CSS.
 
 ### Configuration and generated files
 
@@ -39,6 +39,16 @@ The home page displays **Sample Coffee** in **Gràcia, Barcelona**, with a short
 
 The shop is a plain `sampleShop` object in `src/app/page.tsx`. The page reads its name, neighborhood, and description directly into semantic HTML. There is no database, API request, or browser storage; changing the sample means editing that object. The production build includes its values in the rendered HTML, so visitors can view the shop without an account.
 
+## UI components
+
+shadcn/ui is configured in `components.json`, with component source in `src/components/ui/` and the `@/*` alias pointing to `src/`. The CLI copied the Card, Badge, and Alert components from the official registry; they are local source that we can edit and format. They use the `cn` class-merging utility, Radix Slot for composition, and `class-variance-authority` for variants.
+
+The shop uses Card, CardHeader, CardTitle, CardDescription, and CardContent. Badge identifies fictional data. Alert presents the development notice with `role="note"`, since this static information should not interrupt a screen reader as an urgent alert. Its title wraps on narrow screens. The page keeps a real `<main>`, `<article>`, `<h1>`, and `<h2>`; shadcn components do not replace those semantic choices.
+
+The layout uses Tailwind breakpoints for spacing and shadcn's semantic color tokens for consistent contrast. Accessibility and responsiveness still need checking when we compose components. This page has no interactive controls or keyboard behavior to implement.
+
+Add standard components as features need them using `pnpm dlx shadcn@4.23.0 add <component>`, then review the generated files and dependencies and run the checks below. Keep feature-specific compositions in the feature folders described in `docs/agents/tech-stack.md`.
+
 ## Verify
 
 ```sh
@@ -52,7 +62,8 @@ Stop `pnpm dev` before running the production server, since both default to port
 
 - The Lattely heading, introduction, and “Private development · Sample data” notice appear.
 - Exactly one shop appears: “Sample Coffee”, labeled “Fictional sample shop”, with “Gràcia, Barcelona” and its description.
-- At a narrow mobile width (for example, 375 px) and on desktop, the text remains readable without horizontal scrolling.
+- The development notice is exposed as a note, and the shop is a named article with a level-two heading in the browser's accessibility tree.
+- At narrow mobile widths (320 px and 375 px) and on desktop, all content remains readable without clipping or horizontal scrolling.
 
 To see routing and Fast Refresh in development, run `pnpm dev`, edit the introduction in `src/app/page.tsx`, and save. The browser updates the content at `/`; revert the edit afterward.
 

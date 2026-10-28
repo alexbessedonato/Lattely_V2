@@ -1,3 +1,13 @@
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 const sampleShop = {
   name: "Sample Coffee",
   neighborhood: "Gràcia",
@@ -7,34 +17,39 @@ const sampleShop = {
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-2xl px-6 py-16">
+    <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-16">
+      
       <h1 className="text-4xl font-semibold tracking-tight">Lattely</h1>
-      <p className="mt-4 text-lg text-stone-700">
+      <p className="mt-4 text-lg text-muted-foreground">
         Discover specialty coffee shops in Barcelona.
       </p>
-      <p className="mt-6 text-sm text-stone-600">
-        Private development · Sample data
-      </p>
-      <article
-        aria-labelledby="sample-shop-name"
-        className="mt-8 rounded-xl border border-stone-200 bg-white p-6"
-      >
-        <p className="text-sm font-medium text-stone-600">
-          Fictional sample shop
-        </p>
-        <h2
-          id="sample-shop-name"
-          className="mt-2 text-2xl font-semibold tracking-tight"
-        >
-          {sampleShop.name}
-        </h2>
-        <p className="mt-2 text-sm text-stone-600">
-          {sampleShop.neighborhood}, Barcelona
-        </p>
-        <p className="mt-4 leading-relaxed text-stone-700">
-          {sampleShop.description}
-        </p>
+
+      <Alert role="note" aria-labelledby="development-notice" className="mt-6">
+        <AlertTitle id="development-notice" className="line-clamp-none">
+          Private development · Sample data
+        </AlertTitle>
+        <AlertDescription>
+          This fictional shop is for testing Lattely.
+        </AlertDescription>
+      </Alert>
+
+      <article aria-labelledby="sample-shop-name" className="mt-8">
+        <Card>
+          <CardHeader>
+            <Badge variant="secondary">Fictional sample shop</Badge>
+            <CardTitle className="text-2xl">
+              <h2 id="sample-shop-name">{sampleShop.name}</h2>
+            </CardTitle>
+            <CardDescription>
+              <p>{sampleShop.neighborhood}, Barcelona</p>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="leading-relaxed">{sampleShop.description}</p>
+          </CardContent>
+        </Card>
       </article>
+
     </main>
   );
 }
