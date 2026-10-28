@@ -11,3 +11,7 @@ Use the default labels `needs-triage`, `needs-info`, `ready-for-agent`, `ready-f
 ### Domain docs
 
 Use the single-context layout. See `docs/agents/domain.md`.
+
+### Technology stack
+
+Before changing frameworks, database access, authentication, deployment, styling, or test tooling, read `docs/agents/tech-stack.md`.
