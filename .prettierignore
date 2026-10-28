@@ -1,4 +1,5 @@
 .next/
+test-results/
 .pnpm-store/
 next-env.d.ts
 pnpm-lock.yaml

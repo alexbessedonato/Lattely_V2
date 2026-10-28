@@ -13,22 +13,27 @@
     "typecheck": "next typegen && tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:seed": "neon psql codex-e2e-issue-3 --project-id winter-moon-94225509 --database-name neondb -- -v ON_ERROR_STOP=1 -f scripts/seed-coffee-shops.sql",
+    "db:seed": "neon psql development --project-id winter-moon-94225509 --database-name neondb -- -v ON_ERROR_STOP=1 -f scripts/seed-coffee-shops.sql",
+    "test:e2e": "pnpm db:seed && pnpm exec playwright test",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@vercel/functions": "3.10.4",
     "class-variance-authority": "0.7.1",
     "cn": "0.5.0",
     "drizzle-orm": "0.45.4",
     "next": "16.4.3",
+    "pg": "8.23.1",
     "radix-ui": "1.8.1",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "24.19.2",
+    "@types/pg": "8.23.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "drizzle-kit": "0.31.11",
