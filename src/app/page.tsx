@@ -1,19 +1,14 @@
-import { asc } from "drizzle-orm";
 import { connection } from "next/server";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { getDb } from "@/db";
-import { coffeeShops } from "@/db/schema";
+import { getCoffeeShops } from "@/features/cafes/get-coffee-shops";
 
 export default async function Home() {
   await connection();
 
   let shops;
   try {
-    shops = await getDb()
-      .select()
-      .from(coffeeShops)
-      .orderBy(asc(coffeeShops.name));
+    shops = await getCoffeeShops();
   } catch (error) {
     console.error("Failed to load coffee shops from the database.", error);
     shops = null;
