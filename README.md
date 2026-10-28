@@ -15,7 +15,7 @@ Open <http://localhost:3000>. No account, environment variables, or external ser
 
 ## Checkpoint 1: the application shell
 
-The home page currently shows the Lattely heading, an introduction, and a private-development notice. The sample coffee shop will be added after this checkpoint is reviewed.
+The application shell provides the Lattely heading, an introduction, and a private-development notice.
 
 When a browser requests `/`, Next.js uses `src/app/page.tsx` for the page content and wraps it in `src/app/layout.tsx`, which supplies the document's `<html>` and `<body>` elements and page metadata. Both are Server Components by default. This page has no client-side state or data requests; Next.js can render it to static HTML during the production build.
 
@@ -33,6 +33,12 @@ When a browser requests `/`, Next.js uses `src/app/page.tsx` for the page conten
 
 The application and configuration files were written directly using the standard Next.js setup; there is no generated starter UI to learn or remove.
 
+## Checkpoint 2: one sample coffee shop
+
+The home page displays **Sample Coffee** in **Gràcia, Barcelona**, with a short description of its specialty coffee. Both the page notice and the shop label identify it as fictional sample data for private development.
+
+The shop is a plain `sampleShop` object in `src/app/page.tsx`. The page reads its name, neighborhood, and description directly into semantic HTML. There is no database, API request, or browser storage; changing the sample means editing that object. The production build includes its values in the rendered HTML, so visitors can view the shop without an account.
+
 ## Verify
 
 ```sh
@@ -42,11 +48,15 @@ pnpm build
 pnpm start
 ```
 
-Stop `pnpm dev` before running the production server, since both default to port 3000. Open <http://localhost:3000> and check that the heading, introduction, and development notice appear without signing in. At a narrow mobile width and on desktop, the text should remain readable without horizontal scrolling.
+Stop `pnpm dev` before running the production server, since both default to port 3000. Open <http://localhost:3000> without signing in and check:
+
+- The Lattely heading, introduction, and “Private development · Sample data” notice appear.
+- Exactly one shop appears: “Sample Coffee”, labeled “Fictional sample shop”, with “Gràcia, Barcelona” and its description.
+- At a narrow mobile width (for example, 375 px) and on desktop, the text remains readable without horizontal scrolling.
 
 To see routing and Fast Refresh in development, run `pnpm dev`, edit the introduction in `src/app/page.tsx`, and save. The browser updates the content at `/`; revert the edit afterward.
 
-There is no automated test suite yet. This checkpoint adds a static page with no application logic; verification uses TypeScript, a production build, and a browser smoke check. Database access, authentication, search, and hosting are deferred.
+There is no automated test suite yet. This page renders fixed sample data without interactive logic; verification uses TypeScript, a production build, and a browser smoke check. Database access, authentication, search, and hosting are deferred.
 
 ## Formatting
 
