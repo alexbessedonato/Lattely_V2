@@ -13,6 +13,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:seed": "neon psql codex-e2e-issue-3 --project-id winter-moon-94225509 --database-name neondb -- -v ON_ERROR_STOP=1 -f scripts/seed-coffee-shops.sql",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
